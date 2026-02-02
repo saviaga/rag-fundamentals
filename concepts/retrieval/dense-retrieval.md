@@ -6,6 +6,8 @@ Dense retrieval is a retrieval paradigm in which queries and documents are match
 
 ## Core idea
 
+![Dense retrieval vector space](../../assets/images/dense-retrieval-vector-space.png)
+
 Dense retrieval replaces the discrete, term-based representations used in classical information retrieval with dense vector representations that reside in a shared continuous space. In this paradigm, both queries and documents are mapped to points in the same vector space, and relevance is determined by proximity in that space. The central abstraction is that semantic relatedness between a query and a document can be captured by the geometric relationship between their respective representations. Because these representations are learned from data, the system can generalize beyond exact term matches and capture latent notions of relevance that are difficult to express through lexical overlap alone.
 
 ## Why this concept matters for RAG
