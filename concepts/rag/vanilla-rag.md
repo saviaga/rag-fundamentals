@@ -2,59 +2,73 @@
 
 ## Definition
 
-Vanilla Retrieval-Augmented Generation is a system pattern in which externally retrieved documents are used to condition language model generation at inference time, following a single retrieve-then-generate structure.
+Vanilla RAG is the minimal retrieve-then-generate inference pattern. A user query triggers a single retrieval step, which surfaces documents from an external collection. Those documents are assembled into a context and passed to a language model, which generates a response in a single pass. There is no feedback, no iteration, and no opportunity for the system to revise its retrieval or generation based on intermediate results.
+
+This pattern represents the simplest possible integration of retrieval and generation. Every more complex RAG design can be understood as an extension or modification of this baseline.
 
 ## Core idea
 
-Vanilla RAG is composed of two sequential phases. In the first phase, a retrieval component identifies a small set of documents or passages from an external collection that are estimated to be relevant to the input query. In the second phase, the retrieved content is inserted into the model's input alongside the query, and the language model generates a response conditioned on the combined context.
+Vanilla RAG connects retrieval and generation in the most direct way. The system retrieves once, constructs a context once, and generates once. The process is linear and unidirectional.
 
-This structure is intentionally minimal. Retrieval occurs once, before generation begins. The retrieved material is placed directly into the context window without iterative refinement, re-ranking, or feedback from the generation stage. The model's response is grounded only in what has been retrieved and what fits within the available context. There is no mechanism for the model to request additional information, revise its retrieval query, or verify its output against external evidence.
+The key insight is that vanilla RAG changes how the model is used, not how it is trained. The model's parameters remain fixed. What changes is the input: instead of receiving only a query, the model receives a query along with retrieved evidence. This allows the model to condition its output on information it could not have learned during training, without any modification to the model itself.
 
-The simplicity of this design is its defining characteristic. Vanilla RAG establishes the minimal viable connection between retrieval and generation: the system retrieves, constructs a context, and generates. Every more complex variant of retrieval-augmented generation can be understood as an extension or modification of this basic pattern.
+The simplicity of this design is intentional. Vanilla RAG does not attempt to solve every problem that arises when combining retrieval with generation. It establishes the minimal structure needed to demonstrate that retrieval can improve generation, and nothing more.
 
-## Why this concept matters for RAG
+## The vanilla RAG pipeline
 
-Vanilla RAG addresses several fundamental limitations that arise when language models are used in isolation. Language models encode knowledge in their parameters during training, but this knowledge is static, incomplete, and not always reliable. When a model is asked about recent events, specialized domains, or precise factual details, its parametric knowledge may be insufficient or outdated.
+The vanilla RAG pipeline consists of four sequential steps:
 
-By introducing a retrieval step before generation, vanilla RAG provides a mechanism for supplying the model with relevant external information at the point of need. This allows the system to ground its output in evidence drawn from a document collection that can be updated independently of the model itself. The context window constraint, which limits how much information the model can process at once, makes the retrieval step essential: without selective retrieval, there is no practical way to present relevant evidence from a large collection within the model's finite input.
+1. A user submits a query expressing an information need.
+2. A retrieval component searches an external document collection and returns a ranked list of passages estimated to be relevant to the query.
+3. A context construction step selects, orders, and potentially truncates the retrieved passages to fit within the model's context window, then combines them with the original query into a single input.
+4. A language model generates a response conditioned on the constructed context.
 
-Vanilla RAG is foundational because it establishes the minimal structure needed to combine retrieval and generation into a single inference-time system. It demonstrates that even a simple, non-iterative integration of retrieval with generation can substantially improve the factual grounding of model outputs compared to generation from parametric knowledge alone.
+Each step runs exactly once. There is no loop, no branching, and no feedback from later steps to earlier ones.
 
-## Historical context
+## What vanilla RAG assumes
 
-The idea of conditioning text generation on retrieved information emerged from research in open-domain question answering, where systems needed to locate and synthesize answers from large document collections rather than relying on curated knowledge bases. Early approaches in retrieval-based natural language processing separated the retrieval and reasoning stages, treating retrieval as a preprocessing step that supplied candidate passages to a downstream reader or extraction model.
+Vanilla RAG makes several implicit assumptions that determine when it succeeds and when it fails.
 
-As neural language models became capable of generating fluent and coherent text, researchers explored whether retrieved passages could be used not only to extract answers but to condition free-form generation. This line of work converged on the retrieve-then-generate pattern, in which a retrieval component supplies evidence that is incorporated directly into the generative model's input. The formalization of this pattern as a unified system, rather than a loose coupling of independent components, marked the emergence of retrieval-augmented generation as a distinct research area.
+It assumes that retrieval works. The system expects that the retrieval step will surface documents containing the information needed to answer the query. If retrieval fails, the generation stage has no way to recover.
 
-## Canonical papers
+It assumes that context construction is sufficient. The system expects that the relevant information, once retrieved, can be fit into the context window and arranged in a way that the model can use. If the context is poorly constructed, truncated, or cluttered with irrelevant material, generation quality suffers.
 
-- **Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks**
-  NeurIPS, 2020
-  [https://proceedings.neurips.cc/paper/2020/hash/6b493230205f780e1bc26945df7f3d0b-Abstract.html](https://proceedings.neurips.cc/paper/2020/hash/6b493230205f780e1bc26945df7f3d0b-Abstract.html)
-  This paper introduced and formalized retrieval-augmented generation as a unified system pattern, demonstrating that combining a dense retriever with a sequence-to-sequence generator improved performance on knowledge-intensive tasks.
+It assumes that the model will use the retrieved content. The system expects that the model will ground its response in the provided evidence rather than relying solely on its parametric knowledge. If the model ignores or misinterprets the retrieved passages, the output may be unsupported or incorrect.
 
-- **REALM: Retrieval-Augmented Language Model Pre-Training**
-  ICML, 2020
-  [https://proceedings.mlr.press/v119/guu20a.html](https://proceedings.mlr.press/v119/guu20a.html)
-  This work showed that integrating retrieval into the language model training process could improve the model's ability to use external knowledge, establishing a conceptual foundation for retrieval-augmented systems.
+It assumes that one retrieval pass is enough. The system does not allow for follow-up queries, clarification requests, or iterative refinement. Whatever is retrieved on the first attempt is all the system has to work with.
 
-- **Generalization through Memorization: Nearest Neighbor Language Models**
-  ICLR, 2020
-  [https://openreview.net/forum?id=HklBjCEKvH](https://openreview.net/forum?id=HklBjCEKvH)
-  This paper demonstrated that augmenting a language model with a retrieval mechanism over a datastore of cached representations could improve generation quality, providing evidence that retrieval-based grounding is a general and effective strategy.
+## What vanilla RAG does well
 
-## Common misconceptions
+Vanilla RAG is simple. The pipeline is easy to understand, implement, and debug. Each component has a clear role, and the flow of information is transparent.
 
-A common misconception is that retrieval-augmented generation guarantees the correctness of the generated output. In practice, the model may misinterpret, ignore, or incorrectly synthesize the retrieved material. Retrieval provides evidence, but the generation stage is not constrained to be faithful to that evidence, and the system offers no built-in verification mechanism.
+Vanilla RAG is modular. The retrieval and generation components can be developed, evaluated, and replaced independently. Improvements to retrieval benefit the system without changes to generation, and vice versa.
 
-Another misunderstanding is that retrieval replaces reasoning. Retrieval supplies candidate information, but the model must still interpret, select from, and integrate that information into a coherent response. Retrieval does not eliminate the need for the model to reason over its input; it changes what that input contains.
+Vanilla RAG is a practical starting point. For many applications, the retrieve-then-generate pattern produces useful results without the complexity of more advanced designs. It establishes a working baseline that can be extended as requirements become clearer.
 
-It is also sometimes assumed that vanilla RAG is trivial or obsolete, superseded entirely by more complex variants. While vanilla RAG has well-known limitations, it remains the conceptual baseline against which all other retrieval-augmented approaches are defined. Understanding its structure and constraints is a prerequisite for evaluating more advanced designs.
+Vanilla RAG demonstrates a core principle. Even in its simplest form, combining retrieval with generation improves factual grounding compared to generation from parametric knowledge alone. This observation motivates the entire field of retrieval-augmented generation.
 
-## Limitations
+## What vanilla RAG does not address
 
-The effectiveness of vanilla RAG is directly bounded by the quality of the retrieval stage. If the retriever fails to surface relevant documents, the generation stage has no access to the information needed to produce a well-grounded response. Retrieval errors propagate through the system without any opportunity for correction, because the retrieve-then-generate structure does not include feedback or iteration.
+Vanilla RAG does not verify retrieval quality. There is no mechanism to detect when retrieval has failed or returned irrelevant documents.
 
-The context window imposes an additional bottleneck. Even when retrieval succeeds, the total volume of relevant material may exceed the model's capacity. Decisions about what to include and what to truncate are made before generation begins and cannot be revised based on the model's intermediate outputs. This means that the system's ability to reason over retrieved evidence is limited not only by retrieval quality but by the constraints of context construction.
+Vanilla RAG does not handle ambiguity. If the query is unclear or the retrieved documents are contradictory, the system has no way to seek clarification or reconcile conflicting evidence.
 
-Vanilla RAG also lacks mechanisms for self-correction, verification, or adaptive retrieval. The model cannot detect when it has received insufficient or misleading evidence, nor can it issue follow-up queries or request clarification. These structural limitations, while inherent to the minimal design of vanilla RAG, motivate the development of more structured approaches that introduce iteration, feedback, and dynamic retrieval into the generation process.
+Vanilla RAG does not enforce grounding. The model is not constrained to use the retrieved content faithfully. It may ignore evidence, blend it with parametric knowledge, or generate unsupported claims.
+
+Vanilla RAG does not support iteration. The system cannot refine its retrieval based on generation progress, issue follow-up queries, or revisit earlier decisions.
+
+Vanilla RAG does not include verification. There is no step to check whether the generated response is consistent with the retrieved evidence or factually correct.
+
+These are not failures of implementation. They are structural characteristics of the vanilla pattern. Addressing them requires moving beyond the minimal retrieve-then-generate design.
+
+## Why vanilla RAG is a useful baseline
+
+Vanilla RAG is the reference point against which all other RAG designs are measured. Understanding its structure makes it possible to identify what more advanced approaches add and why those additions are necessary.
+
+Every extension to RAG, whether it introduces re-ranking, query rewriting, iterative retrieval, or verification, can be understood as a response to a limitation of the vanilla pattern. Without a clear picture of vanilla RAG, these extensions appear as arbitrary complexity rather than targeted solutions.
+
+Vanilla RAG also provides a practical baseline for evaluation. When assessing a new retrieval method, generation model, or pipeline design, comparing against vanilla RAG reveals whether the added complexity produces meaningful improvement.
+
+Finally, vanilla RAG is often good enough. For many applications, the simple retrieve-then-generate pattern meets requirements without the overhead of more sophisticated designs. Recognizing when vanilla RAG is sufficient, and when its limitations become unacceptable, is an essential skill for system design.
+
+The limitations of vanilla RAG become clearer when examining the failure modes that arise in practice, which is the focus of the next concept.
