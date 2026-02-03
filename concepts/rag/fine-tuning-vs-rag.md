@@ -2,66 +2,54 @@
 
 ## Definition
 
-Fine-tuning is the process of updating a pretrained model's parameters on a task-specific or domain-specific dataset after initial training. Retrieval-Augmented Generation is the process of injecting external information into a model's input at inference time. Fine-tuning modifies what the model knows; RAG modifies what the model sees.
+Fine-tuning is the process of updating a pretrained model’s parameters on a task-specific or domain-specific dataset after initial training. Retrieval-Augmented Generation is the process of injecting external information into a model’s input at inference time. Fine-tuning changes what the model knows. RAG changes what the model sees at the moment it generates a response.
 
 ## Core idea
 
-Fine-tuning and RAG operate at different points in the system lifecycle and address different kinds of limitations.
+Fine-tuning and RAG operate at different stages of a system’s lifecycle and address different kinds of limitations.
 
-Fine-tuning happens offline, before the model is deployed for inference. It adjusts the model's parameters based on additional training data, allowing the model to internalize new patterns, styles, or domain knowledge. Once fine-tuning is complete, the updated parameters are fixed, and the model's behavior reflects whatever was learned during the fine-tuning process.
+Fine-tuning happens offline, before a model is used for inference. During this process, the model’s parameters are updated using additional data, allowing it to internalize new patterns, behaviors, or domain-specific conventions. Once fine-tuning is complete, the parameters are fixed, and the model’s behavior reflects what was learned during that training phase.
 
-RAG happens online, at inference time. It does not change the model's parameters. Instead, it supplies external information through the model's input, allowing the model to condition its output on evidence that was not present during training or fine-tuning. The model's underlying capabilities remain the same; only the information available in the context changes.
+RAG happens online, at inference time. It does not modify the model’s parameters. Instead, it supplies external information through the model’s input, allowing the model to condition its output on evidence that was not present during training or fine-tuning. The model’s underlying capabilities remain unchanged. Only the information available in the input context varies.
 
-This distinction is fundamental. Fine-tuning changes what the model is. RAG changes what the model can access when generating a response.
+This distinction is fundamental. Fine-tuning changes what the model is. RAG changes what the model can access when producing an answer.
 
 ## Why this distinction matters for RAG
 
 A common question is whether fine-tuning can replace retrieval. The answer depends on what problem needs to be solved.
 
-If the goal is to change how the model behaves, fine-tuning is the appropriate tool. Fine-tuning can teach a model to follow a particular style, respond in a specific format, or handle a specialized task more reliably.
+If the goal is to change how the model behaves, fine-tuning is the appropriate tool. Fine-tuning can teach a model to follow a particular style, respond in a specific format, or handle a specialized task more reliably. In RAG systems, fine-tuning is often used to improve how the model interprets and uses retrieved context. Without fine-tuning, a model may ignore retrieved passages, rely too heavily on its internal assumptions, or produce fluent answers that are not grounded in the provided evidence.
 
-If the goal is to provide the model with up-to-date, domain-specific, or user-specific information, retrieval is more appropriate. Fine-tuning cannot practically encode large, frequently changing knowledge bases into model parameters. Retrieval can supply this information dynamically, without modifying the model.
+Fine-tuning can also help with organization-specific terminology and acronyms that appear frequently and consistently in internal documents. It improves the model’s ability to recognize and interpret these terms, but it is not a practical way to encode the evolving knowledge associated with them.
 
-Understanding this distinction prevents misapplication of either technique. Attempting to solve a retrieval problem with fine-tuning leads to expensive, inflexible systems. Attempting to solve a behavior problem with retrieval leads to unreliable, prompt-dependent systems.
+If the goal is to provide up-to-date, domain-specific, or user-specific information, retrieval is more appropriate. Fine-tuning cannot practically encode large or frequently changing knowledge bases into model parameters. Retrieval can supply this information dynamically at inference time without modifying the model.
+
+In practice, many RAG systems combine both approaches. Fine-tuning shapes how the model processes and grounds information, while retrieval determines what information is available at inference time. Used together, they enable systems that are both behaviorally reliable and grounded in current external knowledge.
 
 ## What fine-tuning is good at
 
-Fine-tuning excels at shaping model behavior. It can teach a model to:
+Fine-tuning is poorly suited for knowledge that changes frequently. Each update requires another round of data preparation, training, evaluation, and deployment. For information that changes regularly, this process becomes impractical.
 
-Adopt a consistent tone, style, or persona across responses.
+Fine-tuning is also limited by model capacity. A model’s parameters can encode only a finite amount of information. Attempting to fine-tune a model on a very large corpus, such as an entire organizational knowledge base, does not guarantee that all relevant facts will be accessible during inference.
 
-Follow domain-specific conventions or formatting requirements.
+Fine-tuning cannot provide information the model has never seen. If a user asks about an event that occurred after the fine-tuning data was collected, the model has no mechanism to answer correctly using fine-tuned knowledge alone.
 
-Handle specialized tasks that require patterns not well represented in the base model's training data.
-
-Improve reliability on structured outputs, such as generating valid code or adhering to a schema.
-
-Fine-tuning is also effective when the knowledge to be encoded is stable and bounded. If a model needs to internalize a fixed body of information that will not change frequently, fine-tuning can embed that knowledge into the parameters, making it available without retrieval.
-
-## What fine-tuning is not good at
-
-Fine-tuning is not well suited for knowledge that changes frequently. Each update requires a new round of training, evaluation, and deployment. For information that changes daily, weekly, or even monthly, this cycle is impractical.
-
-Fine-tuning is also limited by capacity. A model's parameters can only encode so much information. Attempting to fine-tune a model on a very large corpus, such as an entire enterprise knowledge base, will not reliably make all that information accessible during inference.
-
-Fine-tuning cannot provide information the model has never seen. If a user asks about an event that occurred after the fine-tuning dataset was prepared, the model has no way to answer correctly based on fine-tuned knowledge alone.
-
-Finally, fine-tuning cannot support per-user or per-query customization. The model's parameters are shared across all users and all queries. Retrieval, by contrast, can supply different information for different contexts without any change to the model itself.
+Finally, fine-tuning cannot support per-user or per-query customization. The model’s parameters are shared across all users and requests. Retrieval, by contrast, can supply different information for different contexts without changing the model.
 
 ## Cost and update tradeoffs
 
-Fine-tuning involves significant computational cost. Each fine-tuning run requires GPU resources, dataset preparation, training time, and evaluation. Deploying a fine-tuned model may also require infrastructure changes, especially if multiple fine-tuned variants must be served.
+Fine-tuning involves substantial computational and operational cost. Each run requires dataset preparation, training resources, evaluation, and deployment. Supporting multiple fine-tuned variants can further increase infrastructure complexity.
 
-Updating fine-tuned knowledge requires repeating this process. If the underlying information changes, the model must be re-fine-tuned and redeployed. This creates a tradeoff between knowledge freshness and operational cost.
+Updating fine-tuned knowledge requires repeating this process. When underlying information changes, the model must be fine-tuned again and redeployed. This creates a direct tradeoff between knowledge freshness and operational effort.
 
-RAG shifts the cost from training to inference. There is no need to retrain the model when information changes; instead, the document collection is updated, and retrieval automatically surfaces the new content. This makes RAG more suitable for environments where knowledge must be current and where frequent retraining is not feasible.
+RAG shifts most of the cost from training to inference. When information changes, the document collection is updated and retrieval automatically surfaces the new content. This makes RAG better suited for environments where information must remain current and retraining is undesirable.
 
-However, RAG introduces its own costs: maintaining a retrieval index, ensuring retrieval quality, and constructing effective prompts. The choice between fine-tuning and RAG, or a combination of both, depends on the specific requirements of the application.
+However, RAG introduces its own costs. These include maintaining retrieval infrastructure, ensuring retrieval quality, and constructing effective prompts and contexts. In practice, the choice between fine-tuning and RAG, or a combination of both, depends on application requirements.
 
 ## Relationship to other concepts
 
-This distinction builds directly on the training-vs-inference boundary. Fine-tuning is a form of training; it occurs before inference and modifies parameters. RAG is an inference-time mechanism; it operates within the constraints of a fixed model.
+This distinction builds directly on the training versus inference boundary. Fine-tuning is a form of training that modifies parameters before inference. RAG is an inference-time mechanism that operates within a fixed model.
 
-Fine-tuning relates to embeddings in that fine-tuned models may produce different internal representations, but the embeddings used for retrieval are typically produced by separate encoder models. Changing the generation model through fine-tuning does not automatically change retrieval behavior.
+Fine-tuning also relates to embeddings. A fine-tuned generator may produce different internal representations, but retrieval embeddings are typically produced by separate encoder models. Fine-tuning the generator does not automatically change retrieval behavior.
 
-Understanding fine-tuning vs RAG also clarifies system design decisions. A RAG system may use a fine-tuned model as its generator, combining behavior shaping from fine-tuning with dynamic knowledge access from retrieval. The two approaches are complementary. Fine-tuning determines how the model processes and responds to information. RAG determines what information the model has access to when generating a response. Modern systems often employ both to achieve reliable, grounded, and well-behaved outputs.
+Understanding fine-tuning versus RAG clarifies system design choices. A RAG system may use a fine-tuned model as its generator, combining behavior shaping from fine-tuning with dynamic knowledge access from retrieval. The two approaches are complementary. Fine-tuning determines how the model responds. RAG determines what information the model can use when generating that response.
