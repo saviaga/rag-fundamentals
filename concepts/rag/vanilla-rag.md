@@ -16,6 +16,8 @@ The simplicity of this design is intentional. Vanilla RAG does not attempt to so
 
 ## The vanilla RAG pipeline
 
+<img src="../../assets/images/vanilla-rag-pipeline.png" alt="Vanilla RAG pipeline" width="50%">
+
 The vanilla RAG pipeline consists of four sequential steps:
 
 1. A user submits a query expressing an information need.
