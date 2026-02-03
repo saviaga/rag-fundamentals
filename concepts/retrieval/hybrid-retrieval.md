@@ -2,7 +2,7 @@
 
 ## Definition
 
-Hybrid retrieval is an approach that combines lexical and semantic retrieval signals to estimate relevance using both exact term overlap and meaning based similarity.
+Hybrid retrieval is an approach that combines lexical and semantic retrieval signals to estimate relevance using both exact term matching and semantic similarity.
 
 ## Core idea
 
@@ -36,11 +36,11 @@ Empirical results across benchmarks and domains did not support this expectation
   While primarily a dense retrieval paper, this work included experiments demonstrating that combining BM25 scores with dense retrieval scores improved performance, providing early evidence for hybrid approaches.
 
 - **CoRT: Complementary Rankings from Transformers**
-  ACL, 2021 
-  [https://aclanthology.org/2021.naacl-main.331/](https://dl.acm.org/doi/10.1145/3397271.3401075/)
-  This work demonstrated that combining BM25 based lexical rankings with transformer based semantic rankings yields more robust retrieval performance than either approach alone, providing early empirical support for hybrid retrieval.
+  NAACL, 2021
+  [https://aclanthology.org/2021.naacl-main.331/](https://aclanthology.org/2021.naacl-main.331/)
+  This work proposed a simple neural first-stage ranking model that leverages contextual representations from pretrained language models to complement BM25 term-based ranking, increasing candidate recall and demonstrating the value of combining lexical and semantic signals.
 
-- **Complement Lexical Retrieval Model with Semantic Residual Embeddings**
+- **CLEAR: Complement Lexical Retrieval Model with Semantic Residual Embeddings**
   ECIR, 2021 
   [https://dl.acm.org/doi/10.1007/978-3-030-72113-8_10/](https://dl.acm.org/doi/10.1007/978-3-030-72113-8_10/)
   This paper proposed an explicit hybrid retrieval model that augments lexical retrieval with semantic residual representations, showing that lexical and semantic signals can be integrated in a principled and effective manner.

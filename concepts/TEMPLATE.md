@@ -1,6 +1,6 @@
 # <Concept Name>
 
-## One-sentence definition
+## Definition
 
 Provide a single, precise definition of the concept as used in the academic literature.
 

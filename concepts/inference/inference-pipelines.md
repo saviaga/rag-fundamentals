@@ -29,10 +29,10 @@ The introduction of neural ranking models in the mid 2010s expanded this structu
 
 ## Canonical papers
 
-- **Multi-Stage Document Ranking with BERT**
-  arXiv, 2019
-  [https://www.semanticscholar.org/paper/Multi-Stage-Document-Ranking-with-BERT-Nogueira-Yang/63a2fabbe4b1615a84d5f4d90987733cf09e3ff8](https://www.semanticscholar.org/paper/Multi-Stage-Document-Ranking-with-BERT-Nogueira-Yang/63a2fabbe4b1615a84d5f4d90987733cf09e3ff8)
-  This paper formalized the multi-stage ranking pipeline in the context of neural retrieval, demonstrating how successive stages of increasing computational cost can be composed to balance efficiency and effectiveness.
+- **Utilizing BERT for Information Retrieval: Survey, Applications, Resources, and Challenges**
+  ACM Computing Surveys (CSUR), 2024
+  [https://doi.org/10.1145/3648471](https://doi.org/10.1145/3648471)
+  This survey reviews how pretrained transformer models such as BERT are incorporated into information retrieval pipelines, with particular emphasis on ranking, re-ranking, and the integration of neural components into multi-stage inference workflows.
 
 - **Retrieval-Enhanced Machine Learning**
   Foundations and Trends in Information Retrieval, 2022
