@@ -43,6 +43,19 @@ def main():
      ─────┼────→→ x   Both vectors point right (→→)
           │           Angle = 0°, cos(0°) = 1.0
           │
+
+    What does 1.0 mean semantically?
+    ---------------------------------
+    Geometrically: vectors point in exactly the same direction.
+
+    For embeddings: The texts have identical or near-identical meaning.
+    Examples:
+    - "car" and "car" (same word)
+    - "automobile" and "car" (synonyms, typically 0.7-0.9)
+    - A document and itself (exactly 1.0)
+
+    In RAG: A score of 1.0 means perfect match. Scores above 0.8
+    typically indicate highly relevant documents.
     """)
 
     # Perpendicular vectors
@@ -58,6 +71,20 @@ def main():
      ─────┼────→ x    v1 points right
           │           Angle = 90°, cos(90°) = 0.0
           │
+
+    What does 0.0 mean semantically?
+    ---------------------------------
+    Geometrically: vectors are perpendicular (orthogonal), no overlap.
+
+    For embeddings: The texts are completely unrelated.
+    Examples:
+    - "pizza" and "quantum physics"
+    - "bicycle" and "democracy"
+    - Any two words from entirely different domains
+
+    In RAG: Scores near 0 mean the document is irrelevant to the query.
+    However, exact 0.0 is rare—most unrelated pairs score 0.1-0.3
+    due to common words and statistical noise in embeddings.
     """)
 
     # Opposite vectors
