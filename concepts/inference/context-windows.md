@@ -53,6 +53,34 @@ Another misunderstanding is that sufficiently large context windows remove the n
 
 It is also sometimes assumed that truncation is a minor implementation detail. In practice, truncation determines which evidence the model can access and which is discarded. Poor truncation choices can exclude the most relevant passages or fragment critical information, directly degrading generation quality.
 
+## Mitigating truncation
+
+When retrieved content exceeds the context window:
+
+1. **Better chunking**: Smaller, focused chunks instead of long documents; each chunk should be self-contained
+2. **Smarter truncation**: Prioritize documents with query terms, not just by retrieval rank; use extractive summarization
+3. **Re-ranking**: Re-rank documents by relevance before truncation; cross-encoder models can improve ranking
+4. **Query-focused summarization**: Summarize each document with respect to the query to fit more information
+
+See `code-examples/context/context_truncation.py` for a demonstration.
+
+## Lost-in-the-middle effect
+
+Research shows that LLMs do not attend equally to all positions in the context. Information in the middle receives less attention than information at the beginning or end (Liu et al., 2023).
+
+**Practical implications:**
+- Document ordering matters—don't just concatenate in retrieval-score order
+- Consider placing most relevant documents at the start or end
+- Shorter contexts reduce the middle problem (with 3-4 chunks, the "middle" barely exists)
+- Explicit instructions ("pay attention to all documents") only partially mitigate the effect
+
+**Ordering strategies:**
+- *Relevance-first*: Most relevant at the beginning
+- *Relevance-last*: Most relevant at the end
+- *Edges-priority*: Alternate placing relevant docs at start and end
+
+See `code-examples/context/ordering_effect.py` for a demonstration.
+
 ## Limitations
 
 The context window imposes an unavoidable tradeoff between the amount of evidence available to the model and the focus of the model’s attention. Including more material increases coverage but risks diluting attention across less relevant content. Including less material improves focus but increases the chance of omitting important evidence.

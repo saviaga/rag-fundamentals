@@ -171,29 +171,12 @@ def main():
         print("  If we only retrieve top-3, the LLM never sees the answer.")
 
     # ================================================================
-    # Summary
+    # Reference
     # ================================================================
     print("\n" + "=" * 70)
-    print("KEY TAKEAWAYS")
+    print("For failure modes and mitigations, see:")
+    print("  concepts/rag/common-rag-failures.md")
     print("=" * 70)
-    print("""
-    Retrieval failures cause RAG failures. Common failure modes:
-
-    1. MISSING CONTENT: Answer not in corpus
-       → Solution: Ensure corpus coverage, detect unanswerable queries
-
-    2. VOCABULARY MISMATCH: Query/document language differs
-       → Solution: Query expansion, hybrid retrieval, better embeddings
-
-    3. AMBIGUOUS QUERIES: Multiple valid interpretations
-       → Solution: Query clarification, user context, re-ranking
-
-    4. NEEDLE IN HAYSTACK: Relevant doc ranks too low
-       → Solution: Increase k, use re-rankers, improve chunking
-
-    Remember: A perfect LLM cannot compensate for bad retrieval.
-    The retrieved context IS the model's knowledge for that query.
-    """)
 
 
 if __name__ == "__main__":

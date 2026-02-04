@@ -144,56 +144,15 @@ Answer:"""
         print(f"  {i}. {doc[:60]}... [EXCLUDED]")
 
     # ================================================================
-    # The problem illustrated
+    # The problem
     # ================================================================
     print("\n" + "=" * 70)
     print("THE PROBLEM")
     print("=" * 70)
     print("""
 In Scenario 2, the model only sees the first 1-2 documents.
-
-The query asks about "refund timeframe" but:
-- Doc 1 (included): General overview, NO specific timeframe
-- Doc 2 (EXCLUDED): Contains the answer "30 days"!
-- Doc 4 (EXCLUDED): Contains important exceptions!
-
-The model will either:
-1. Hallucinate a timeframe (dangerous!)
-2. Say it doesn't know (frustrating but safer)
-3. Give vague answer from Doc 1 (unhelpful)
-
-None of these are good outcomes.
-""")
-
-    # ================================================================
-    # Mitigation strategies
-    # ================================================================
-    print("=" * 70)
-    print("MITIGATION STRATEGIES")
-    print("=" * 70)
-    print("""
-1. BETTER CHUNKING
-   - Smaller, focused chunks instead of long documents
-   - Each chunk should be self-contained and answer-worthy
-
-2. SMARTER TRUNCATION
-   - Prioritize documents with query terms (not just by retrieval rank)
-   - Use extractive summarization to compress documents
-
-3. RE-RANKING
-   - Re-rank documents by relevance BEFORE truncation
-   - Cross-encoder models can improve ranking
-
-4. QUERY-FOCUSED SUMMARIZATION
-   - Summarize each document with respect to the query
-   - Fit more information in less space
-
-5. LARGER CONTEXT WINDOWS
-   - Use models with bigger context (128K+)
-   - But: attention quality may degrade at edges (see ordering_effect.py)
-
-Remember: What the model doesn't see, it cannot use.
-Truncation is information loss, and lost info may be critical.
+The answer "30 days" is in Doc 2, which was EXCLUDED.
+The model will hallucinate, say "I don't know", or give a vague answer.
 """)
 
     # ================================================================
@@ -213,6 +172,9 @@ Truncation is information loss, and lost info may be critical.
     print(f"With 8K-token limit:  {8000 - overhead} tokens available for docs")
 
     print("\n" + "=" * 70)
+    print("For mitigation strategies, see:")
+    print("  concepts/inference/context-windows.md")
+    print("=" * 70)
 
 
 if __name__ == "__main__":

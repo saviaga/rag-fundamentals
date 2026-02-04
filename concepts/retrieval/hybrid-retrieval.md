@@ -45,6 +45,16 @@ Empirical results across benchmarks and domains did not support this expectation
   [https://dl.acm.org/doi/10.1007/978-3-030-72113-8_10/](https://dl.acm.org/doi/10.1007/978-3-030-72113-8_10/)
   This paper proposed an explicit hybrid retrieval model that augments lexical retrieval with semantic residual representations, showing that lexical and semantic signals can be integrated in a principled and effective manner.
 
+## Combination methods
+
+Common approaches for combining lexical and dense signals:
+
+1. **Linear interpolation**: `α × dense + (1-α) × BM25` where α controls the balance
+2. **Reciprocal Rank Fusion (RRF)**: Combines rankings instead of scores, avoiding normalization issues. Formula: `RRF(d) = Σ 1/(k + rank(d))` for each retrieval method
+3. **Learned combination**: Train a model to weight the scores based on query characteristics
+
+RRF is often more stable than score interpolation because it only uses rank positions, not raw scores which may have different scales. See `code-examples/retrieval/hybrid_example.py` for implementations.
+
 ## Common misconceptions
 
 A common misconception is that hybrid retrieval is a temporary workaround that will become unnecessary as dense retrieval models improve. This view overlooks the structural complementarity between lexical and semantic signals. Even as dense models improve, there remain query types and domains where exact term matching provides information that is not reliably captured by learned representations.

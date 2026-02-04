@@ -161,67 +161,13 @@ This is the "Lost in the Middle" phenomenon (Liu et al., 2023).
     print(f"  Simulated attention weight: {simulate_attention_weight(len(documents)-1, len(documents)):.2f} (high)")
 
     # ================================================================
-    # Implications for RAG
+    # Reference
     # ================================================================
     print("\n" + "=" * 70)
-    print("IMPLICATIONS FOR RAG SYSTEMS")
-    print("=" * 70)
-    print("""
-The lost-in-the-middle effect has practical implications:
-
-1. DOCUMENT ORDERING MATTERS
-   - Don't just concatenate retrieved docs in retrieval-score order
-   - Consider placing most relevant docs at START or END
-
-2. ORDERING STRATEGIES
-   - "Relevance-first": Most relevant at the beginning
-   - "Relevance-last": Most relevant at the end (recency bias)
-   - "Edges-priority": Alternate placing relevant docs at start/end
-
-3. CHUNKING IMPLICATIONS
-   - Shorter contexts reduce the middle problem
-   - With 3-4 chunks, the "middle" barely exists
-
-4. CONTEXT LENGTH TRADE-OFF
-   - Longer contexts = more information but worse middle attention
-   - Sometimes less is more (fewer, better-placed docs)
-
-5. PROMPT ENGINEERING
-   - Explicit instructions can help: "Pay attention to all documents"
-   - But this only partially mitigates the effect
-
-Reference: Liu et al. (2023) "Lost in the Middle: How Language Models
-Use Long Contexts" - https://arxiv.org/abs/2307.03172
-""")
-
-    # ================================================================
-    # Best practice demonstration
-    # ================================================================
-    print("=" * 70)
-    print("RECOMMENDED: INTERLEAVED ORDERING")
+    print("For implications and ordering strategies, see:")
+    print("  concepts/inference/context-windows.md")
     print("=" * 70)
 
-    print("""
-One strategy: interleave by relevance, placing top docs at edges.
-
-If docs are ranked [1, 2, 3, 4, 5] by relevance:
-  → Reorder to [1, 3, 5, 4, 2] or [1, 5, 3, 4, 2]
-  → Puts #1 at start, #2 at end, less important in middle
-""")
-
-    # Simulate interleaved ordering
-    ranked_docs = list(enumerate(documents, 1))  # (rank, doc) pairs
-    # Simplified interleave: odds at start, evens at end (reversed)
-    interleaved = []
-    for i in range(0, len(ranked_docs), 2):
-        interleaved.append(ranked_docs[i])
-    for i in range(len(ranked_docs) - 1 if len(ranked_docs) % 2 == 0 else len(ranked_docs) - 2, 0, -2):
-        interleaved.append(ranked_docs[i])
-
-    print("Example interleaved ordering:")
-    for i, (orig_rank, doc) in enumerate(interleaved):
-        attention = simulate_attention_weight(i, len(interleaved))
-        print(f"  Position {i+1} [attn:{attention:.2f}]: Doc originally ranked #{orig_rank}")
 
 
 if __name__ == "__main__":

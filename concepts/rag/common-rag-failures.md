@@ -56,6 +56,17 @@ Retrieval happens once, before generation, with no opportunity for refinement. C
 
 Any system that follows this pattern will exhibit the same weaknesses, regardless of implementation quality. Recognizing these limitations explains why more advanced RAG designs introduce iteration, feedback, verification, or adaptive retrieval.
 
+## Mitigating retrieval failures
+
+| Failure Mode | Description | Mitigation |
+|--------------|-------------|------------|
+| **Missing content** | Answer not in corpus | Ensure corpus coverage; detect unanswerable queries |
+| **Vocabulary mismatch** | Query/document language differs | Query expansion; hybrid retrieval; better embeddings |
+| **Ambiguous queries** | Multiple valid interpretations | Query clarification; user context; re-ranking |
+| **Needle in haystack** | Relevant doc ranks too low | Increase k; use re-rankers; improve chunking |
+
+A perfect LLM cannot compensate for bad retrieval. The retrieved context IS the model's knowledge for that query. See `code-examples/retrieval/retrieval_failure_example.py` for demonstrations of each failure mode.
+
 ## Relationship to other concepts
 
 Common RAG failures arise directly from the structure of vanilla RAG. They show why retrieval quality, context window constraints, and prompting all matter, and why none of them can be treated as minor implementation details.

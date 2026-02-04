@@ -40,6 +40,12 @@ Cosine similarity measures the angle between two embedding vectors, producing a 
 
 These thresholds vary by embedding model and domain. Calibration against labeled data is recommended for production systems.
 
+## Why dense retrieval finds what lexical search misses
+
+Dense retrieval using embeddings can find relevant documents even when the query and document use completely different words. For example, a query for "automobile maintenance" can match a document about "car repair" because embeddings place these concepts nearby in vector space, despite zero lexical overlap.
+
+This is the key advantage of dense retrieval over lexical methods like BM25, which require exact word matches. See `code-examples/embeddings/semantic_vs_lexical.py` for a demonstration.
+
 ## Key constraints
 
 Embeddings are static representations. Once a document is embedded, its vector does not change unless the document is re-encoded. If the embedding model is updated, the entire collection must typically be re-embedded to remain consistent.

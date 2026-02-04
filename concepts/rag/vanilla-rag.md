@@ -63,6 +63,12 @@ Vanilla RAG does not include verification. There is no step to check whether the
 
 These are not failures of implementation. They are structural characteristics of the vanilla pattern. Addressing them requires moving beyond the minimal retrieve-then-generate design.
 
+## Critical insight
+
+The LLM's "knowledge" for any given query IS the retrieved context. The model only knows what's in the prompt. If retrieval fails, the LLM either hallucinates or says "I don't know." This is why retrieval quality is paramount in RAG systems.
+
+See `code-examples/vanilla_rag/retrieve_then_generate.py` for a complete pipeline demonstration.
+
 ## Why vanilla RAG is a useful baseline
 
 Vanilla RAG is the reference point against which all other RAG designs are measured. Understanding its structure makes it possible to identify what more advanced approaches add and why those additions are necessary.

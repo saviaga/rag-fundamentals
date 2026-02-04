@@ -157,32 +157,12 @@ def main():
             print(f"  {rank}. [{score:.4f}] {doc[:50]}...")
 
     # ================================================================
-    # Why hybrid works
+    # Reference
     # ================================================================
     print("\n" + "=" * 70)
-    print("WHY HYBRID RETRIEVAL WORKS")
+    print("For why hybrid works and combination methods, see:")
+    print("  concepts/retrieval/hybrid-retrieval.md")
     print("=" * 70)
-    print("""
-    BM25 strengths:
-    ✓ Exact keyword matching (important for names, technical terms)
-    ✓ No embedding model needed
-    ✓ Fast and interpretable
-
-    Dense strengths:
-    ✓ Semantic understanding (synonyms, paraphrases)
-    ✓ Captures meaning beyond exact words
-    ✓ Works across vocabulary gaps
-
-    Hybrid combines both:
-    ✓ Catches documents that BM25 finds (exact matches)
-    ✓ Catches documents that dense finds (semantic matches)
-    ✓ More robust across different query types
-
-    Common combination methods:
-    1. Linear interpolation: α * dense + (1-α) * BM25  [shown above]
-    2. Reciprocal Rank Fusion (RRF): combine rankings, not scores
-    3. Learned combination: train a model to weight the scores
-    """)
 
     # ================================================================
     # Reciprocal Rank Fusion demo

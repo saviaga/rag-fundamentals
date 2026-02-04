@@ -279,38 +279,13 @@ Each step is shown explicitly so you can understand the flow.
         rag_pipeline(query, store, top_k=3, verbose=True)
 
     # ================================================================
-    # Key concepts summary
+    # Reference
     # ================================================================
     print("\n" + "=" * 70)
-    print("KEY CONCEPTS IN VANILLA RAG")
+    print("For vanilla RAG concepts and limitations, see:")
+    print("  concepts/rag/vanilla-rag.md")
+    print("  concepts/rag/common-rag-failures.md")
     print("=" * 70)
-    print("""
-1. INDEXING (offline)
-   - Documents are chunked and embedded
-   - Embeddings stored in vector database
-   - Done once, before any queries
-
-2. QUERY EMBEDDING (runtime)
-   - User query converted to same embedding space
-   - Must use same embedding model as indexing
-
-3. RETRIEVAL (runtime)
-   - Find k most similar documents via vector search
-   - Similarity typically measured by cosine distance
-
-4. PROMPT CONSTRUCTION (runtime)
-   - Combine retrieved docs with query into prompt
-   - Template design affects answer quality
-
-5. GENERATION (runtime)
-   - LLM generates answer based on prompt
-   - Model only knows what's in the prompt!
-
-CRITICAL INSIGHT:
-The LLM's "knowledge" for this query IS the retrieved context.
-If retrieval fails, the LLM either hallucinates or says "I don't know."
-This is why retrieval quality is paramount in RAG systems.
-""")
 
     # ================================================================
     # Try with real API (optional)

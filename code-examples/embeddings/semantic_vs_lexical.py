@@ -189,19 +189,10 @@ def main():
         demo_with_simulated_embeddings()
 
     print("\n" + "=" * 60)
-    print("TAKEAWAY FOR RAG")
+    print("For more on semantic vs lexical retrieval, see:")
+    print("  concepts/language-models/embeddings.md")
+    print("  concepts/retrieval/dense-retrieval.md")
     print("=" * 60)
-    print("""
-Dense retrieval using embeddings can find relevant documents even
-when the query and document use completely different words.
-
-Example: Query "automobile maintenance" can match a document about
-"car repair" because embeddings place these concepts nearby in
-vector space, despite zero lexical overlap.
-
-This is the key advantage of dense retrieval over lexical methods
-like BM25, which require exact word matches.
-""")
 
 
 if __name__ == "__main__":

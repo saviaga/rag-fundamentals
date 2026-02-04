@@ -43,6 +43,20 @@ In the late 2010s, advances in representation learning and scalable similarity s
   [https://proceedings.mlr.press/v119/guu20a.html](https://proceedings.mlr.press/v119/guu20a.html)
   This paper showed how dense retrieval could be tightly integrated with language model training, linking retrieval directly to generation and influencing later Retrieval Augmented Generation systems.
 
+## When to use dense vs lexical retrieval
+
+**Dense retrieval works well when:**
+- Users may use synonyms or paraphrases
+- Conceptual similarity matters more than exact words
+- Cross-lingual or vocabulary mismatch is common
+
+**Lexical retrieval (BM25) works well when:**
+- Query contains specific technical terms or names
+- Exact keyword match is important
+- Domain has consistent vocabulary
+
+In practice, hybrid retrieval combining both methods is often most robust. See `code-examples/retrieval/bm25_vs_dense.py` for a comparison.
+
 ## Common misconceptions
 
 A common misconception is that dense retrieval reliably returns semantically relevant results. In practice, retrieval quality depends on the learned representations, which may miss fine grained distinctions or reflect biases present in the training data. Another frequent misunderstanding is the belief that high similarity in the representation space implies factual correctness. Dense retrieval surfaces passages that are close to a query in meaning, but this closeness does not guarantee that the retrieved content is accurate or reliable.

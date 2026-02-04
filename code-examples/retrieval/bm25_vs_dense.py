@@ -189,24 +189,13 @@ def main():
     print("\n  → BM25 correctly prioritizes documents with exact terms")
     print("    'python', 'asyncio', 'event loop' - important for technical queries.")
 
-    # --- Key insights ---
+    # --- Reference ---
     print("\n" + "=" * 70)
-    print("KEY INSIGHTS")
+    print("For guidance on when to use each method, see:")
+    print("  concepts/retrieval/dense-retrieval.md")
+    print("  concepts/retrieval/lexical-retrieval.md")
+    print("  concepts/retrieval/hybrid-retrieval.md")
     print("=" * 70)
-    print("""
-    BM25 (Lexical) works well when:
-    ✓ Query contains specific technical terms or names
-    ✓ Exact keyword match is important
-    ✓ Domain has consistent vocabulary
-
-    Dense (Semantic) works well when:
-    ✓ Users may use synonyms or paraphrases
-    ✓ Conceptual similarity matters more than exact words
-    ✓ Cross-lingual or vocabulary mismatch is common
-
-    This is why hybrid retrieval (combining both) is often best for RAG.
-    See: concepts/retrieval/hybrid-retrieval.md
-    """)
 
 
 if __name__ == "__main__":
