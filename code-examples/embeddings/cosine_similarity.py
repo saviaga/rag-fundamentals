@@ -73,6 +73,22 @@ def main():
      ←────┼────→ x    v1 right (→), v2 left (←)
           │           Angle = 180°, cos(180°) = -1.0
           │
+
+    What does -1.0 mean semantically?
+    ---------------------------------
+    Geometrically: vectors point in exactly opposite directions.
+
+    In theory, this would mean "maximally different" or "opposite meaning"
+    (e.g., "hot" vs "cold", "good" vs "bad").
+
+    In practice: Real embedding models rarely produce -1.0 because:
+    1. Most embeddings have positive components (no true opposites)
+    2. Unrelated words are usually ~0.0 (orthogonal), not -1.0
+    3. Even antonyms like "hot"/"cold" are often SIMILAR (~0.5+)
+       because they share context (both describe temperature)
+
+    For RAG retrieval, you typically see scores from 0.3 to 1.0.
+    Scores near 0 mean "unrelated", not "opposite".
     """)
 
     # --- Part 2: Magnitude invariance ---
