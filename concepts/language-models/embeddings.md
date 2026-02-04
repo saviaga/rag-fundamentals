@@ -22,6 +22,24 @@ This enables semantic retrieval. Unlike lexical methods, which rely on exact wor
 
 At the same time, embeddings limit what can be retrieved. If the embedding model fails to capture a particular distinction, such as a subtle domain-specific concept or a rare term, retrieval cannot recover it. Retrieval quality is therefore bounded by the quality and suitability of the embedding model.
 
+## Interpreting cosine similarity scores
+
+Cosine similarity measures the angle between two embedding vectors, producing a score from -1 to 1.
+
+| Score | Geometric meaning | Semantic interpretation |
+|-------|-------------------|------------------------|
+| **1.0** | Identical direction | Identical or synonymous meaning. A document compared to itself scores 1.0. Synonyms like "car" and "automobile" typically score 0.7–0.9. |
+| **0.0** | Perpendicular (orthogonal) | Completely unrelated texts. However, exact 0.0 is rare in practice—most unrelated pairs score 0.1–0.3 due to shared common words and statistical noise. |
+| **-1.0** | Opposite direction | Theoretically "opposite meaning." In practice, real embedding models rarely produce negative scores because most embeddings have positive components. Even antonyms like "hot" and "cold" often score positively (~0.5+) because they share context (both describe temperature). |
+
+**Practical guidance for RAG:**
+- Scores above 0.8 typically indicate highly relevant documents
+- Scores between 0.5–0.8 suggest moderate relevance
+- Scores below 0.3 usually mean the document is not relevant
+- Scores near 0 mean "unrelated," not "opposite"
+
+These thresholds vary by embedding model and domain. Calibration against labeled data is recommended for production systems.
+
 ## Key constraints
 
 Embeddings are static representations. Once a document is embedded, its vector does not change unless the document is re-encoded. If the embedding model is updated, the entire collection must typically be re-embedded to remain consistent.

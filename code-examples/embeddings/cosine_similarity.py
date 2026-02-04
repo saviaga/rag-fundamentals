@@ -30,7 +30,7 @@ def main():
     print("  0.0 = perpendicular (orthogonal)")
     print(" -1.0 = opposite direction")
 
-    # Identical vectors
+    # Identical vectors (similarity = 1.0)
     v1 = np.array([1.0, 0.0])
     v2 = np.array([1.0, 0.0])
     print(f"\nIdentical vectors: {v1} and {v2}")
@@ -39,83 +39,34 @@ def main():
           y
           │
           │
-          │
-     ─────┼────→→ x   Both vectors point right (→→)
-          │           Angle = 0°, cos(0°) = 1.0
-          │
-
-    What does 1.0 mean semantically?
-    ---------------------------------
-    Geometrically: vectors point in exactly the same direction.
-
-    For embeddings: The texts have identical or near-identical meaning.
-    Examples:
-    - "car" and "car" (same word)
-    - "automobile" and "car" (synonyms, typically 0.7-0.9)
-    - A document and itself (exactly 1.0)
-
-    In RAG: A score of 1.0 means perfect match. Scores above 0.8
-    typically indicate highly relevant documents.
+     ─────┼────→→ x   Both vectors point right
+          │           Angle = 0°
     """)
 
-    # Perpendicular vectors
+    # Perpendicular vectors (similarity = 0.0)
     v3 = np.array([1.0, 0.0])
     v4 = np.array([0.0, 1.0])
     print(f"Perpendicular vectors: {v3} and {v4}")
     print(f"Cosine similarity: {cosine_similarity(v3, v4):.4f}")
     print("""
           y
+          ↑  v2
           │
-          ↑  v2 points up
-          │
-     ─────┼────→ x    v1 points right
-          │           Angle = 90°, cos(90°) = 0.0
-          │
-
-    What does 0.0 mean semantically?
-    ---------------------------------
-    Geometrically: vectors are perpendicular (orthogonal), no overlap.
-
-    For embeddings: The texts are completely unrelated.
-    Examples:
-    - "pizza" and "quantum physics"
-    - "bicycle" and "democracy"
-    - Any two words from entirely different domains
-
-    In RAG: Scores near 0 mean the document is irrelevant to the query.
-    However, exact 0.0 is rare—most unrelated pairs score 0.1-0.3
-    due to common words and statistical noise in embeddings.
+     ─────┼────→ x   v1
+          │           Angle = 90°
     """)
 
-    # Opposite vectors
+    # Opposite vectors (similarity = -1.0)
     v5 = np.array([1.0, 0.0])
     v6 = np.array([-1.0, 0.0])
     print(f"Opposite vectors: {v5} and {v6}")
     print(f"Cosine similarity: {cosine_similarity(v5, v6):.4f}")
     print("""
-          y
-          │
-          │
-          │
-     ←────┼────→ x    v1 right (→), v2 left (←)
-          │           Angle = 180°, cos(180°) = -1.0
-          │
+       v2 ←────┼────→ v1
+               │           Angle = 180°
 
-    What does -1.0 mean semantically?
-    ---------------------------------
-    Geometrically: vectors point in exactly opposite directions.
-
-    In theory, this would mean "maximally different" or "opposite meaning"
-    (e.g., "hot" vs "cold", "good" vs "bad").
-
-    In practice: Real embedding models rarely produce -1.0 because:
-    1. Most embeddings have positive components (no true opposites)
-    2. Unrelated words are usually ~0.0 (orthogonal), not -1.0
-    3. Even antonyms like "hot"/"cold" are often SIMILAR (~0.5+)
-       because they share context (both describe temperature)
-
-    For RAG retrieval, you typically see scores from 0.3 to 1.0.
-    Scores near 0 mean "unrelated", not "opposite".
+    For semantic interpretation of these scores, see:
+    concepts/language-models/embeddings.md#interpreting-cosine-similarity-scores
     """)
 
     # --- Part 2: Magnitude invariance ---
