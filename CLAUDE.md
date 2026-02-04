@@ -12,8 +12,34 @@ This is a documentation-only repository providing a literature-grounded survey o
 
 - **concepts/**: Core reference material organized by topic (language-models, retrieval, inference, rag). Non-linear - concepts can be accessed in any order.
 - **learning-paths/**: Sequential reading paths (numbered: 01-absolute-beginner.md, etc.)
-- **code-examples/**: Minimal illustrative code only
+- **code-examples/**: Runnable Python examples organized by topic
 - **assets/images/**: Diagrams supporting conceptual explanations
+
+## Code Examples
+
+Examples are educational scripts that teach concepts by execution. Each prints explanations as it runs.
+
+```
+code-examples/
+├── embeddings/          # Vector similarity, word analogies
+├── retrieval/           # BM25 vs dense, failures, hybrid
+├── context/             # Truncation, lost-in-the-middle
+└── vanilla_rag/         # Complete RAG pipeline
+```
+
+**Running examples:**
+```bash
+python code-examples/embeddings/cosine_similarity.py
+python code-examples/vanilla_rag/retrieve_then_generate.py
+```
+
+**Dependencies:** Most examples need only `numpy`. Optional dependencies (gensim, sentence-transformers, openai) enable real embeddings/generation but aren't required—examples fall back to simulated data.
+
+**Guidelines for new examples:**
+- Keep under 100 lines when possible
+- Use simulated data so examples run without API keys
+- Print educational output explaining each step
+- Link to relevant concept file in docstring
 
 ## Content Guidelines
 
@@ -41,6 +67,10 @@ This repository IS NOT: tutorial series, how-to guide, framework comparison, ben
 - Design for first-time sequential reading
 - Include prerequisites and learning objectives
 
-## No Build System
+## Development
 
-This is a documentation repository with no build, test, or lint commands. The only tooling is standard git operations.
+No build system or test suite. To run code examples:
+```bash
+pip install numpy  # minimum requirement
+python code-examples/<folder>/<example>.py
+```
