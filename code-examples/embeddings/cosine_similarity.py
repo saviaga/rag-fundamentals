@@ -35,18 +35,45 @@ def main():
     v2 = np.array([1.0, 0.0])
     print(f"\nIdentical vectors: {v1} and {v2}")
     print(f"Cosine similarity: {cosine_similarity(v1, v2):.4f}")
+    print("""
+          y
+          │
+          │
+          │
+     ─────┼────→→ x   Both vectors point right (→→)
+          │           Angle = 0°, cos(0°) = 1.0
+          │
+    """)
 
     # Perpendicular vectors
     v3 = np.array([1.0, 0.0])
     v4 = np.array([0.0, 1.0])
-    print(f"\nPerpendicular vectors: {v3} and {v4}")
+    print(f"Perpendicular vectors: {v3} and {v4}")
     print(f"Cosine similarity: {cosine_similarity(v3, v4):.4f}")
+    print("""
+          y
+          │
+          ↑  v2 points up
+          │
+     ─────┼────→ x    v1 points right
+          │           Angle = 90°, cos(90°) = 0.0
+          │
+    """)
 
     # Opposite vectors
     v5 = np.array([1.0, 0.0])
     v6 = np.array([-1.0, 0.0])
-    print(f"\nOpposite vectors: {v5} and {v6}")
+    print(f"Opposite vectors: {v5} and {v6}")
     print(f"Cosine similarity: {cosine_similarity(v5, v6):.4f}")
+    print("""
+          y
+          │
+          │
+          │
+     ←────┼────→ x    v1 right (→), v2 left (←)
+          │           Angle = 180°, cos(180°) = -1.0
+          │
+    """)
 
     # --- Part 2: Magnitude invariance ---
     print("\n[2] MAGNITUDE INVARIANCE")
