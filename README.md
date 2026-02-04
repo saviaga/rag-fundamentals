@@ -95,8 +95,9 @@ Informal sources such as blog posts or framework documentation are not used as p
 
 ## How to use this repository
 
-Readers new to RAG are encouraged to follow the [absolute beginner learning path](learning-paths/absolute-beginner.md).
-Readers with existing background may browse the [`concepts/`](concepts/) directory directly as a reference.
+Readers new to RAG are encouraged to follow the [absolute beginner learning path](learning-paths/01-absolute-beginner.md).
+Readers with ML/LLM experience who want a shorter path focused on retrieval and RAG-specific concepts should follow the [experienced ML practitioner path](learning-paths/02-experienced-ml-practitioner.md).
+Readers with existing RAG background may browse the [`concepts/`](concepts/) directory directly as a reference.
 
 This repository is designed to establish shared vocabulary and intuition before engaging with advanced RAG research.
 

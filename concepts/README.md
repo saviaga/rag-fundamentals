@@ -15,18 +15,7 @@ Concepts are grouped into subdirectories by abstraction level:
 
 This is a reference, not a tutorial. Concepts are not numbered because they are not meant to be read in a single fixed order. Readers with different backgrounds may enter at different points.
 
-However, if you are new to RAG, the following sequence provides a reasonable starting point:
-
-1. [What is a language model](language-models/what-is-a-language-model.md)
-2. [Training vs inference](language-models/training-vs-inference.md)
-3. [Information retrieval](retrieval/information-retrieval.md)
-4. [Dense retrieval](retrieval/dense-retrieval.md)
-5. [Context windows](inference/context-windows.md)
-6. [What is RAG](rag/what-is-rag.md)
-7. [Vanilla RAG](rag/vanilla-rag.md)
-8. [Common RAG failures](rag/common-rag-failures.md)
-
-For a fully guided experience, see the [learning paths](../learning-paths/).
+For guided reading sequences, see the [learning paths](../learning-paths/).
 
 ## File structure
 

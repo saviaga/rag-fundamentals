@@ -9,6 +9,7 @@ Unlike the `concepts/` directory, which serves as a non-linear reference, learni
 | Path | Description |
 |------|-------------|
 | [01-absolute-beginner.md](01-absolute-beginner.md) | Start here if you are new to RAG. Covers foundational concepts in a structured order. |
+| [02-experienced-ml-practitioner.md](02-experienced-ml-practitioner.md) | For readers with ML/LLM experience. Focuses on retrieval and RAG-specific concepts. |
 
 ## How to use learning paths
 
