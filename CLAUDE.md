@@ -17,7 +17,7 @@ This is a documentation-only repository providing a literature-grounded survey o
 
 ## Code Examples
 
-Examples are educational scripts that teach concepts by execution. Each prints explanations as it runs.
+Examples demonstrate concepts through execution. Explanations belong in concept files, not in code.
 
 ```
 code-examples/
@@ -38,7 +38,8 @@ python code-examples/vanilla_rag/retrieve_then_generate.py
 **Guidelines for new examples:**
 - Keep under 100 lines when possible
 - Use simulated data so examples run without API keys
-- Print educational output explaining each step
+- **Demonstrate, don't explain** — code shows the concept in action
+- **Reference concept files** — end with pointer to relevant `.md` file for explanations
 - Link to relevant concept file in docstring
 
 ## Content Guidelines
